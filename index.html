@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .beauty {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+        background-color: white;
+        border-radius: 50%;
+        margin: 2px;
+        box-shadow: -5px -5px 17px #fff, 5px 5px 17px rgba(0,0,0,.16);
+        border: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="container" style=" position: absolute; left: 50%; top: 50%;transform: translate(-50%,-50%); background-color: #eee; padding: 15px; border-radius: 15px;">
+        <div id="Output" style="width: 224px; height: 65px; background-color: white; margin-bottom: 5px; border-radius: 15px; margin-bottom: 10px; margin-top: 40px;">
+            <div id="Previous" style="font-size: 15px; color: dimgray; text-align: right; position: relative; right: 10px; top:10px;"></div>
+            <div id="Current" style="font-size: 20px; text-align: right; font-weight: 600; position: relative; right: 10px; top: 10px;"></div>
+        </div>
+        <div id="Input">
+            <button class="beauty" onclick="Clear()">C</button>
+            <button class="beauty" onclick="Delete()">DEL</button>
+            <button class="beauty" onclick="Calculate('%')">%</button>
+            <button class="beauty" onclick="Calculate('/')">÷</button>
+
+            <br>
+
+            <button class="beauty" onclick="Calculate('7')">7</button>
+            <button class="beauty" onclick="Calculate('8')">8</button>
+            <button class="beauty" onclick="Calculate('9')">9</button>
+            <button class="beauty" onclick="Calculate('*')">x</button>
+
+            <br>
+
+            <button class="beauty" onclick="Calculate('4')">4</button>
+            <button class="beauty" onclick="Calculate('5')">5</button>
+            <button class="beauty" onclick="Calculate('6')">6</button>
+            <button class="beauty" onclick="Calculate('-')">-</button>
+
+            <br>
+
+            <button class="beauty" onclick="Calculate('1')">1</button>
+            <button class="beauty" onclick="Calculate('2')">2</button>
+            <button class="beauty" onclick="Calculate('3')">3</button>
+            <button class="beauty" onclick="Calculate('+')">+</button>
+
+            <br>
+
+            <button class="beauty" onclick="Calculate('0')">0</button>
+            <button class="beauty" onclick="Calculate('.')">.</button>
+            <button class="beauty" onclick="Calculate('=')" style="width: 101px; border-radius: 45px;">=</button>
+        </div>
+    </div>
+    
+    <script>
+        let str1 = '', str2 ='', str3 = '', operate = '', fre = 0
+        function Calculate(a) {
+            if(48 <= a.charCodeAt()  && a.charCodeAt() <= 57 || a.charCodeAt() == 46) {  //숫자일 때
+                if(operate == '' && fre == 0)  str1 += a, document.getElementById('Current').innerHTML = str1
+                else                           str2 += a, document.getElementById('Current').innerHTML = str2
+            } else {  //숫자가 아닐 때
+                if(a.charCodeAt() == 61) {  // '='
+                    if(operate != '' && str2 != '') {
+                        str3 = str1+operate+str2, fre++;
+                        document.getElementById('Previous').innerHTML = `${str3}=`
+                        document.getElementById('Current').innerHTML = eval(str3)
+                        operate = '', str1 = eval(str3).toString(), str2 = '', str3 = ''
+                    }
+                } else {  // '=' X
+                    
+                
+                    if(operate == '') {
+                        operate = a;
+                        document.getElementById('Previous').innerHTML = `${str1} ${operate}`
+                        document.getElementById('Current').style = "font-size: 20px; text-align: right; font-weight: 600; position: relative; right: 10px; top:10px;"
+                    } else if(operate != '' && str2 != '') {
+                        operate = a, str3 = str1+operate+str2, fre++
+                        document.getElementById('Previous').innerHTML = `${eval(str3)}${operate}`
+                        document.getElementById('Current').innerHTML = eval(str3)
+                        str1 = eval(str3).toString(), str2 = '', str3 = ''
+                    } 
+                }
+            }
+        }
+
+        function Clear() {
+            str1 = '', str2 ='', str3 = '', operate = '', fre = 0
+            document.getElementById('Previous').innerHTML = ''
+            document.getElementById('Current').innerHTML = ''
+        }
+
+        function Delete() {
+            if(operate == '' && fre == 0) {
+                str1 = document.getElementById('Current').innerHTML=(document.getElementById('Current').innerText).slice(0,-1)
+                document.getElementById('Current').innerHTML = str1
+            } else {
+                str2 = document.getElementById('Current').innerHTML=(document.getElementById('Current').innerText).slice(0,-1)
+                document.getElementById('Current').innerHTML = str2
+            }
+
+        }
+    </script>
+</body>
+</html>
